@@ -29,12 +29,11 @@ TO DO:
 
 Phase 3: Built-in Commands  
 DONE:  
-- None yet.
+- cd (update working directory, handle errors) 
 
 TO DO:  
 - Implement built-in commands:  
   - echo (with options like -n)  
-  - cd (update working directory, handle errors)  
   - pwd (print current directory)  
   - env (display environment variables)  
   - export (set environment variables)  

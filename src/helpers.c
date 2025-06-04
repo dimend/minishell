@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:07 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 18:30:37 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:03:21 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,40 @@ char *get_path(char **envp, char **cmd)
     return (finalpath);
 }
 
-int custom_cd(char **envp, char **args)
+void process_command(char **envp, char *line)
 {
-    char *target_dir;
+    char **cmd;
+    char *path;
 
-	target_dir = NULL;
-    if (!args[1] || ft_strlen(args[1]) == 0)
+    cmd = ft_split(line, ' ');
+    path = NULL;
+
+    if (!cmd || !cmd[0])
     {
-        target_dir = get_env_value(envp, "HOME");
-        if (!target_dir)
-        {
-            printf("cd: HOME not set\n");
-            return (1);
-        }
+        free_cmd(cmd);
+        return;
+    }
+    
+    if (ft_strncmp(cmd[0], "cd", ft_strlen(cmd[0])) == 0)
+    {
+        custom_cd(envp, cmd);
+    }
+    else if (ft_strncmp(cmd[0], "exit", ft_strlen(cmd[0])) == 0)
+    {
+        custom_exit(&cmd[1]);
     }
     else
     {
-        target_dir = args[1];
+        path = get_path(envp, cmd);
+        if (path)
+        {
+            execute_command(path, cmd, envp);
+            free(path);
+        }
+        else
+        {
+            printf("Command not found: %s\n", cmd[0]);
+        }
     }
-    if (chdir(target_dir) != 0)
-	{
-		perror("cd");
-		return (1);
-	}
-    return (0);
+    free_cmd(cmd);
 }
-

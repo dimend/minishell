@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 18:02:38 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:05:07 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char	*get_path(char **envp, char **cmd);
 char    **get_env_path(char **envp, const char *name);
 char    *get_env_value(char **envp, const char *name);
 void    process_command(char **envp, char *line);
+void    execute_command(char *path, char **cmd, char **envp);
 void    free_cmd(char **cmd);
 int     custom_cd(char **envp, char **args);
+int     custom_exit(char **args);
 
 #endif
