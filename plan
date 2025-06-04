@@ -1,85 +1,113 @@
-/* 
----------------Phase 1: Setup & Basic Input Handling
-DONE:
-shell loop that reads user input
-Add each command line to history with add_history().
-Handle Ctrl-D (EOF) gracefully to exit shell.
-Print back the input or run printf for debug.
+Minishell Project Progress & To-Do Plan
 
-TODO: 
-handles basic parsing.
-Implement signal handling for Ctrl-C (SIGINT) to prevent shell exit and properly handle input interruptions using signal() or sigaction().
+Phase 1: Setup & Basic Input Handling  
+DONE:  
+- Shell loop reading user input with readline().  
+- Commands added to history via add_history().  
+- Ctrl-D (EOF) handled gracefully to exit shell.  
+- Signal handler for Ctrl-C (SIGINT) implemented to prevent shell exit and refresh prompt correctly.  
+- Debug printing of input commands.
 
----------------Phase 2: Command Parsing
-Goal: Parse the input string into structured commands.
-Tokenize input:
-Handle whitespace separation.
-Respect quotes (single ' and double ").
-Implement escape sequences \.
-Expand environment variables ($VAR) using getenv() or your own environment list.
-Build internal data structures (e.g., linked lists or arrays) to store commands, arguments, and operators.
-Parse redirections (>, >>, <) and pipe (|) symbols, associating them correctly with commands.
+TO DO:  
+- None (Phase 1 complete).
 
----------------Phase 3: Built-in Commands
-Goal: Implement all required built-in commands.
-Support:
-echo (handle options like -n),
-cd (update current working directory, handle errors),
-pwd (print current directory),
-env (display environment variables),
-export (set environment variables),
-unset (remove environment variables),
-exit (exit shell, with optional status code).
-Built-ins execute in the main shell process (no fork).
-Use printf to display output and error messages.
+---
 
----------------Phase 4: Executing External Commands
-Goal: Launch external programs.
-Implement command execution with:
-fork()
-execve() (to run programs)
-waitpid() (to wait for child processes)
-Search PATH environment variable to find executables.
-Handle errors (command not found, permission denied).
-Hanle multiple arguments for commands.
+Phase 2: Command Parsing  
+DONE:  
+- Basic tokenization by splitting input line on spaces (ft_split(line, ' ')).
 
----------------Phase 5: Redirections
-Goal: Implement input and output redirections.
-Handle:
-Output redirection > (overwrite)
-Append output >>
-Input redirection <
-Use open(), dup2(), and close() to manipulate file descriptors.
-Support redirections in combination with built-in and external commands.
+TO DO:  
+- Handle quotes (single ' and double ").  
+- Implement escape sequences (\).  
+- Expand environment variables ($VAR).  
+- Parse and associate redirection operators (>, >>, <).  
+- Parse pipes (|) and correctly associate them with commands.  
+- Build internal data structures (linked lists/arrays) to represent parsed commands and operators.
 
----------------Phase 6: Pipes
-Goal: Support chaining commands via pipes (|).
-Parse commands separated by |.
-Create pipes using pipe().
-Fork processes for each command.
-Redirect standard input/output with dup2() to connect commands via pipes.
-Close unnecessary file descriptors in child and parent processes.
-Support multiple pipes (e.g., cmd1 | cmd2 | cmd3).
-Combine with redirections where applicable.
+---
 
----------------Phase 7: Signal Handling & Terminal Control
-Goal: Handle signals and terminal settings smoothly.
-Handle signals:
-SIGINT (Ctrl-C): Interrupt current input or command, don’t exit shell.
-SIGQUIT (Ctrl-): Usually ignored or handled gracefully.
-Use sigaction() and sigemptyset(), sigaddset() to manage signals properly.
-Use tcgetattr() and tcsetattr() for terminal modes if needed (e.g., disabling echo or raw mode).
-Use ioctl(), ttyslot(), ttyname() for terminal-related features if needed.
+Phase 3: Built-in Commands  
+DONE:  
+- None yet.
 
----------------Phase 8: Final Touches
-Goal: Polish your shell.
-Implement error handling and meaningful error messages (use strerror() and perror()).
-Clean up memory, close all open file descriptors.
-Implement exit with proper return status.
+TO DO:  
+- Implement built-in commands:  
+  - echo (with options like -n)  
+  - cd (update working directory, handle errors)  
+  - pwd (print current directory)  
+  - env (display environment variables)  
+  - export (set environment variables)  
+  - unset (remove environment variables)  
+  - exit (exit shell, with optional status code)  
+- Ensure built-ins execute in the main shell process (no fork).  
+- Use printf for output and error messages.
 
-Test edge cases:
-Empty input, multiple spaces, nested quotes.
-Signals during input and execution.
-Write a clean Makefile linking with -lreadline and -ltermcap (or -lcurses).
-Ensure code respects 42 coding style. 
-*/
+---
+
+Phase 4: Executing External Commands  
+DONE:  
+- Resolving executable paths by searching the PATH environment variable (get_path() function).  
+- Basic command existence check and debug print.  
+- Added command execution with fork(), execve(), and waitpid().  
+- Refactored execution code into a separate function `execute_command()` for clarity.
+
+TO DO:  
+- Handle errors more gracefully (command not found, permission denied).  
+- Support multiple arguments robustly and complex command lines.
+
+---
+
+Phase 5: Redirections  
+DONE:  
+- None yet.
+
+TO DO:  
+- Implement input/output redirection:  
+  - Output redirection > (overwrite)  
+  - Append output >>  
+  - Input redirection <  
+- Use open(), dup2(), and close() for file descriptor management.  
+- Support redirections alongside built-in and external commands.
+
+---
+
+Phase 6: Pipes  
+DONE:  
+- None yet.
+
+TO DO:  
+- Support chaining commands with pipes (|).  
+- Parse multiple piped commands.  
+- Create pipes with pipe().  
+- Fork processes for each command in the pipe chain.  
+- Redirect stdin/stdout with dup2() to connect pipes.  
+- Close unused file descriptors properly.  
+- Support combined use of pipes and redirections.
+
+---
+
+Phase 7: Signal Handling & Terminal Control  
+DONE:  
+- Basic SIGINT handler to avoid shell exit and refresh prompt on Ctrl-C.
+
+TO DO:  
+- Handle additional signals like SIGQUIT (Ctrl-\).  
+- Use sigaction(), sigemptyset(), sigaddset() for robust signal handling.  
+- Implement terminal settings control with tcgetattr(), tcsetattr() for features like disabling echo or raw mode.  
+- Optionally use ioctl(), ttyslot(), ttyname() for advanced terminal features.
+
+---
+
+Phase 8: Final Touches  
+DONE:  
+- None yet.
+
+TO DO:  
+- Add comprehensive error handling with meaningful messages (strerror(), perror()).  
+- Free all allocated memory and close file descriptors cleanly.  
+- Implement exit with correct return status.  
+- Handle edge cases such as empty input, multiple spaces, nested quotes.  
+- Handle signals during input and execution properly.  
+- Write a clean Makefile linking with -lreadline and -ltermcap (or -lcurses).  
+- Ensure code style follows 42 coding norms.

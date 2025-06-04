@@ -6,43 +6,76 @@
 #    By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 13:42:42 by dimendon          #+#    #+#              #
-#    Updated: 2025/06/04 14:01:11 by dimendon         ###   ########.fr        #
+#    Updated: 2025/06/04 17:36:34 by dimendon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/06/04 13:42:42 by dimendon          #+#    #+#              #
+#    Updated: 2025/06/04 16:20:14 by dimendon         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes
+.MAKEFLAGS: --no-print-directory
+
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror -I./includes -I./src/libft
 LDFLAGS = -lreadline -lncurses
 
-TARGET = minishell
-OBJ_PATH = obj/
+TARGET      = minishell
+OBJ_PATH    = obj/
+LIBFT_DIR   = src/libft
+LIBFT_LIB   = $(LIBFT_DIR)/libft.a
 
-SRCS =  src/main.c \
-        src/validations.c \
-        src/utils.c \
-        src/helpers.c \
-        src/init.c
+SRCS =	src/main.c \
+		src/validations.c \
+		src/utils.c \
+		src/cleanup.c \
+		src/helpers.c \
+		src/init.c
 
 OBJS = $(SRCS:src/%.c=$(OBJ_PATH)%.o)
 HEADERS = includes/minishell.h
 
+# Color codes
+GREEN  = \033[0;32m
+YELLOW = \033[1;33m
+CYAN   = \033[0;36m
+RESET  = \033[0m
+
+all: $(LIBFT_LIB) $(TARGET)
+
 $(OBJ_PATH)%.o: src/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-all: $(TARGET)
+	@printf "$(CYAN)Compiling minishell source: $<$(RESET)\n"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) $(LDFLAGS)
+	@printf "$(GREEN)Linking minishell executable...$(RESET)\n"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) $(LDFLAGS) -o $(TARGET)
+	@printf "$(GREEN)minishell built successfully!$(RESET)\n"
+
+$(LIBFT_LIB):
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) build
 
 clean:
-	rm -f $(OBJS)
-	rm -rf $(OBJ_PATH)
+	@printf "$(YELLOW)Cleaning object files (minishell)...$(RESET)\n"
+	@rm -f $(OBJS)
+	@rm -rf $(OBJ_PATH)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(TARGET)
+	@printf "$(YELLOW)Removing executable (minishell)...$(RESET)\n"
+	@rm -f $(TARGET)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
 .PHONY: all clean fclean re
+

@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 13:58:53 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:02:38 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@
 # include <readline/readline.h>   // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h>    // add_history, rl_clear_history
 
-/*
- * Linker Flags Needed:
- *  -lreadline  (for readline and history functions)
- *  -ltermcap or -lcurses (for termcap functions like tgetent, tputs)
- */
+char	*get_path(char **envp, char **cmd);
+char    **get_env_path(char **envp, const char *name);
+char    *get_env_value(char **envp, const char *name);
+void    process_command(char **envp, char *line);
+void    free_cmd(char **cmd);
+int     custom_cd(char **envp, char **args);
 
 #endif
