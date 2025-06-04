@@ -6,32 +6,45 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 14:04:32 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:43:10 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(void)
+void sigint_handler(int signum)
 {
-    char *line;
+    (void)signum;
 
+    write(STDOUT_FILENO, "\n", 1);
+
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    (void)argc;
+    (void)argv;
+    
+    char *line;
+    
+    line = NULL;
+    signal(SIGINT, sigint_handler);
     while (1)
     {
         line = readline("minishell$ ");
         if (line == NULL)
         {
-            printf("\nEOF\n");
             break;
         }
-
-		if (*line)
+        if (*line)
             add_history(line);
-			
-        printf("Input: %s\n", line);
+            
+        process_command(envp, line);
         free(line);
     }
-
-	write_history(".minishell_history");
+    write_history(".minishell_history");
     return (0);
 }
