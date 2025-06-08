@@ -29,26 +29,23 @@ short int custom_cd(char **envp, char **args)
 
 short int custom_exit(char **args)
 {
-    int status;
-    int num_len;
+    long long value;
 
-    status = 0;
-    if (!args || !args[0])
-    {
-        printf("exit\n");
-        exit(status);
-    }
-    num_len = ft_is_str_num(args[0]);
-    if (num_len == 0 || num_len > 3) {
-        printf("exit: %s: numeric argument required\n", args[0]);
-        exit(255);
-    }
-    status = ft_atoi(args[0]);
-    if (status < 0 || status > 255) {
-        printf("exit\n");
-        exit(255);
-    }
     printf("exit\n");
-    exit(status);
-    return 0;
+
+    if (!args || !args[1])
+        exit(0);
+
+    if (!ft_atoany(args[1], &value))
+    {
+        printf("exit: %s: numeric argument required\n", args[1]);
+        exit(255);
+    }
+    if (args[2])
+    {
+        printf("exit: too many arguments\n");
+        return (1);
+    }
+    exit((unsigned char)(value % 256));
 }
+
