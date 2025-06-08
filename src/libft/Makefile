@@ -6,7 +6,7 @@
 #    By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 19:39:40 by dimendon          #+#    #+#              #
-#    Updated: 2025/06/04 16:52:02 by dimendon         ###   ########.fr        #
+#    Updated: 2025/06/04 20:38:41 by dimendon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,8 @@ SRCS = \
 	ft_lstclear_bonus.c \
 	ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c \
-	ft_strtok.c
+	ft_strtok.c \
+	ft_is_str_num.c
 
 OBJS = $(SRCS:.c=.o)
 HEADERS = libft.h
