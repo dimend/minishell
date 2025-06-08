@@ -33,12 +33,13 @@ OBJ_PATH    = obj/
 LIBFT_DIR   = src/libft
 LIBFT_LIB   = $(LIBFT_DIR)/libft.a
 
-SRCS =	src/main.c \
-		src/validations.c \
-		src/utils.c \
+SRCS =	src/builtin.c \
 		src/cleanup.c \
+		src/controller.c \
+		src/handlers.c \
 		src/helpers.c \
-		src/init.c
+		src/main.c \
+		src/utils.c
 
 OBJS = $(SRCS:src/%.c=$(OBJ_PATH)%.o)
 HEADERS = includes/minishell.h

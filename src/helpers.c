@@ -13,95 +13,40 @@
 #include "minishell.h"
 #include "libft/libft.h"
 
-char *get_env_value(char **envp, const char *name)
+short int is_builtin(const char *cmd)
 {
-    int i;
-    size_t len;
-	
-	len = strlen(name);
-	i = 0;
-    while (envp[i])
-    {
-        if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-            return (envp[i] + len + 1);
-        i++;
-    }
-    return (NULL);
+    return (
+        ft_strncmp(cmd, "cd", 3) == 0 ||
+        ft_strncmp(cmd, "exit", 5) == 0
+/*         ft_strncmp(cmd, "echo", 5) == 0 ||
+        ft_strncmp(cmd, "pwd", 4) == 0 ||
+        ft_strncmp(cmd, "export", 7) == 0 ||
+        ft_strncmp(cmd, "unset", 6) == 0 ||
+        ft_strncmp(cmd, "env", 4) == 0 */
+    );
 }
 
-char **get_env_path(char **envp, const char *name)
+void execute_command(char *path, char **cmd, char **envp)
 {
-    char *value;
-	
-	value = get_env_value(envp, name);
-    if (!value)
-        return (NULL);
-    return (ft_split(value, ':'));
-}
+    pid_t pid;
+    int status;
 
-char *get_path(char **envp, char **cmd)
-{
-    int i;
-    char **paths;
-    char *finalpath;
-    char *tmp;
-
-	i = 0;
-	paths = get_env_path(envp, "PATH");
-	finalpath = NULL;
-	tmp = NULL;
-    while (paths && paths[i])
+    pid = fork();
+    status = 0;
+    if (pid == 0)
     {
-        tmp = ft_strcatrealloc(paths[i], "/");
-        if (tmp)
-            tmp = ft_strcatrealloc(tmp, cmd[0]);
-
-        if (tmp && access(tmp, F_OK) == 0)
+        if (execve(path, cmd, envp) == -1)
         {
-            finalpath = ft_strdup(tmp);
-            free(tmp);
-            break;
+            perror("execve");
+            _exit(1);
         }
-        free(tmp);
-        i++;
     }
-    return (finalpath);
-}
-
-void process_command(char **envp, char *line)
-{
-    char **cmd;
-    char *path;
-
-    cmd = ft_split(line, ' ');
-    path = NULL;
-
-    if (!cmd || !cmd[0])
+    else if (pid > 0)
     {
-        free_cmd(cmd);
-        return;
-    }
-    
-    if (ft_strncmp(cmd[0], "cd", ft_strlen(cmd[0])) == 0)
-    {
-        custom_cd(envp, cmd);
-    }
-    else if (ft_strncmp(cmd[0], "exit", ft_strlen(cmd[0])) == 0)
-    {
-        custom_exit(&cmd[1]);
+        waitpid(pid, &status, 0);
     }
     else
     {
-        path = get_path(envp, cmd);
-        if (path)
-        {
-            execute_command(path, cmd, envp);
-            free(path);
-        }
-        else
-        {
-            printf("Command not found: %s\n", cmd[0]);
-        }
+        perror("fork");
     }
-    free_cmd(cmd);
 }

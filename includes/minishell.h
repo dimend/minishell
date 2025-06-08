@@ -42,13 +42,26 @@
 # include <readline/readline.h>   // readline, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h>    // add_history, rl_clear_history
 
-char	*get_path(char **envp, char **cmd);
-char    **get_env_path(char **envp, const char *name);
-char    *get_env_value(char **envp, const char *name);
-void    process_command(char **envp, char *line);
-void    execute_command(char *path, char **cmd, char **envp);
+// ==================== BUILTIN ====================
+short int custom_cd(char **envp, char **args);
+short int custom_exit(char **args);
+
+// ==================== CLEANUP ====================
 void    free_cmd(char **cmd);
-int     custom_cd(char **envp, char **args);
-int     custom_exit(char **args);
+
+// ==================== CONTROLLER ====================
+void    process_command(char **envp, char *line);
+
+// ==================== HANDLER ====================
+void    run_builtin(char **envp, char **cmd);
+
+// ==================== HELPERS ====================
+void        execute_command(char *path, char **cmd, char **envp);
+short int   is_builtin(const char *cmd);
+
+// ==================== UTILS ====================
+char    *get_env_value(char **envp, const char *name);
+char    **get_env_path(char **envp, const char *name);
+char    *get_path(char **envp, char **cmd);
 
 #endif
