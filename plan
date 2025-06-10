@@ -43,6 +43,7 @@ TO DO:
 - type – Identify command type
 - help – Display built-in command info
 - history – Show command history
+
 - Ensure built-ins execute in the main shell process (no fork).  
 - Use printf for output and error messages.
 

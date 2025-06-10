@@ -117,3 +117,25 @@ short int custom_pwd(char **arg)
 
     return(0);
 }
+
+short int custom_history(char **arg)
+{
+    int fd;
+    char c;
+    
+    fd = open(".minishell_history", O_RDONLY);
+    c = '\0';
+    if (fd == -1 || arg[0] == NULL)
+    {
+        perror("Error opening history file");
+        return (1);
+    }
+
+    while (read(fd, &c, 1) > 0)
+    {
+        write(STDOUT_FILENO, &c, 1);
+    }
+    close(fd);
+    return(0);
+}
+
