@@ -3,9 +3,10 @@
 
 void process_command(char **envp, char *line)
 {
-    char **cmd = ft_tokenize(line, ' ');
+    char **cmd;
     char *path;
-
+    cmd = ft_tokenize(line, ' ');
+    
     if (!cmd || !cmd[0])
     {
         free_cmd(cmd);
