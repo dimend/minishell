@@ -16,9 +16,9 @@ TO DO:
 Phase 2: Command Parsing  
 DONE:  
 - Basic tokenization by splitting input line on spaces (ft_split(line, ' ')).
+- Handle quotes (single ' and double ").
 
 TO DO:  
-- Handle quotes (single ' and double ").  
 - Implement escape sequences (\).  
 - Expand environment variables ($VAR).  
 - Parse and associate redirection operators (>, >>, <).  
