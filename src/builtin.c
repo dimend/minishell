@@ -49,3 +49,71 @@ short int custom_exit(char **args)
     exit((unsigned char)(value % 256));
 }
 
+short int custom_echo(char **arg)
+{
+    int i;
+    int flag_newline;
+
+    i = 1;
+    flag_newline = 1;
+    if (arg[1] && ft_strncmp(arg[1], "-n", 2) == 0)
+    {
+        flag_newline = 0;
+        i++;
+    }
+    while (arg[i])
+    {
+        if (write(1, arg[i], ft_strlen(arg[i])) == -1)
+        {
+            perror("Command failed");
+            return (1);
+        }
+        if (arg[i + 1] != NULL)
+        {
+            if (write(1, " ", 1) == -1)
+            {
+                perror("Command failed");
+                return (1);
+            }
+        }
+        i++;
+    }
+    if (flag_newline) {
+        write(1, "\n", 1);
+    }
+    return (0);
+}
+
+short int custom_pwd(char **arg)
+{
+    char *path;
+    int logical;
+    
+    logical = 1;
+    if(arg[1] != NULL && ft_strncmp(arg[1], "-P", 2) == 0)
+            logical = 0;
+
+    if (logical)
+    {
+        path = getenv("PWD");    
+        if (!path)
+        {
+            perror("PWD missing, using physical path");
+            logical = 0;
+        }
+    }
+    if (!logical)
+    {
+        path = getcwd(NULL, 0);
+        if (!path)
+        {
+            perror("getcwd failed");
+            return (1);
+        }
+    }
+    printf("%s\n", path);
+    if (!logical)
+        free(path);
+
+    return(0);
+}

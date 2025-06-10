@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 21:05:07 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:28:59 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 // ==================== BUILTIN ====================
 short int custom_cd(char **envp, char **args);
 short int custom_exit(char **args);
+short int custom_echo(char **arg);
+short int custom_pwd(char **arg);
 
 // ==================== CLEANUP ====================
 void    free_cmd(char **cmd);
