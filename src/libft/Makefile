@@ -60,6 +60,7 @@ SRCS = \
 	ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c \
 	ft_strtok.c \
+	ft_atoany.c \
 	ft_is_str_num.c
 
 OBJS = $(SRCS:.c=.o)
