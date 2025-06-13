@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:07 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/10 19:16:28 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:22:33 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ short int is_builtin(const char *cmd)
         ft_strncmp(cmd, "cd", 3) == 0 ||
         ft_strncmp(cmd, "exit", 5) == 0 ||
         ft_strncmp(cmd, "echo", 5) == 0 ||
-        ft_strncmp(cmd, "pwd", 4) == 0 ||
-        ft_strncmp(cmd, "history", 8) == 0
+        ft_strncmp(cmd, "pwd", 4) == 0
 /*        ft_strncmp(cmd, "unset", 6) == 0 ||
         ft_strncmp(cmd, "env", 4) == 0 */
     );
@@ -51,16 +50,3 @@ void execute_command(char *path, char **cmd, char **envp)
     }
 }
 
-short int create_and_clear_history()
-{
-    int fd;
-    
-    fd = open(".minishell_history", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (fd == -1)
-    {
-        perror("Failed to create and clear history file");
-        return (1);
-    }
-    close(fd);
-    return(0);
-}

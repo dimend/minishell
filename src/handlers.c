@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 18:22:36 by dimendon          #+#    #+#             */
+/*   Updated: 2025/06/13 18:22:37 by dimendon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft/libft.h"
 
@@ -10,9 +22,7 @@ void run_builtin(char **envp, char **cmd)
     else if (!ft_strncmp(cmd[0], "echo", 5))
         custom_echo(cmd);
     else if (!ft_strncmp(cmd[0], "pwd", 4))
-        custom_pwd(cmd);
-     else if (!ft_strncmp(cmd[0], "history", 8))
-        custom_history(cmd);
+        custom_pwd();
 /*    else if (!ft_strncmp(cmd[0], "unset", 6))
         custom_unset(envp, cmd);
     else if (!ft_strncmp(cmd[0], "env", 4))

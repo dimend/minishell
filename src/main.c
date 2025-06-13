@@ -6,11 +6,13 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/10 19:46:41 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:22:31 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft/libft.h"
+#include <limits.h>
 
 void sigint_handler(int signum)
 {
@@ -27,29 +29,22 @@ int main(int argc, char **argv, char **envp)
 {
     (void)argc;
     (void)argv;
-    
+
     char *line;
-    int count;
     
-    line = NULL;
     signal(SIGINT, sigint_handler);
-    create_and_clear_history();
-    count = 0;
     while (1)
     {
         line = readline("minishell$ ");
         if (line == NULL)
-        {
             break;
-        }
+
         if (*line)
-        {
-            count++;
             add_history(line);
-            write_history(".minishell_history");
-        }    
+
         process_command(envp, line);
         free(line);
     }
     return (0);
 }
+

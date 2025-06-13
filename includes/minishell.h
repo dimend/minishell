@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/10 19:33:12 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:06:42 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@
 short int custom_cd(char **envp, char **args);
 short int custom_exit(char **args);
 short int custom_echo(char **arg);
-short int custom_pwd(char **arg);
-short int custom_history(char **arg);
+short int custom_pwd();
 
 // ==================== CLEANUP ====================
 void    free_cmd(char **cmd);
@@ -59,7 +58,6 @@ void    run_builtin(char **envp, char **cmd);
 // ==================== HELPERS ====================
 void        execute_command(char *path, char **cmd, char **envp);
 short int   is_builtin(const char *cmd);
-short int   create_and_clear_history();
 
 // ==================== UTILS ====================
 char    *get_env_value(char **envp, const char *name);
