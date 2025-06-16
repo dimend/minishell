@@ -3,6 +3,11 @@
         "history.h": "c",
         "minishell.h": "c",
         "string.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "readline.h": "c",
+        "algorithm": "c",
+        "format": "c",
+        "chrono": "c",
+        "variant": "c"
     }
 }

@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/13 18:06:42 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:10:43 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@
 # include <readline/history.h>  // rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 
 // ==================== BUILTIN ====================
-short int custom_cd(char **envp, char **args);
-short int custom_exit(char **args);
-short int custom_echo(char **arg);
-short int custom_pwd();
+short int   custom_cd(char **envp, char **args);
+short int   custom_exit(char **args);
+short int   custom_echo(char **arg);
+short int   custom_pwd();
+void        custom_export(char **envp);
 
 // ==================== CLEANUP ====================
 void    free_cmd(char **cmd);
@@ -58,6 +59,7 @@ void    run_builtin(char **envp, char **cmd);
 // ==================== HELPERS ====================
 void        execute_command(char *path, char **cmd, char **envp);
 short int   is_builtin(const char *cmd);
+char        **copy_envp(char **envp);
 
 // ==================== UTILS ====================
 char    *get_env_value(char **envp, const char *name);

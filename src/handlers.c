@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:22:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/13 18:22:37 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:12:00 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void run_builtin(char **envp, char **cmd)
         custom_echo(cmd);
     else if (!ft_strncmp(cmd[0], "pwd", 4))
         custom_pwd();
-/*    else if (!ft_strncmp(cmd[0], "unset", 6))
-        custom_unset(envp, cmd);
-    else if (!ft_strncmp(cmd[0], "env", 4))
-        custom_env(envp); */
+    else if (!ft_strncmp(cmd[0], "export", 7))
+        custom_export(envp);
 }
 
