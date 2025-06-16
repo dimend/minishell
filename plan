@@ -3,7 +3,7 @@ Minishell Project Progress & To-Do Plan
 Phase 1: Setup & Basic Input Handling  
 DONE:  
 - Shell loop reading user input with readline().  
-- Commands added to history via add_history().  
+- Commands added to history via add_history() with line number.  
 - Ctrl-D (EOF) handled gracefully to exit shell.  
 - Signal handler for Ctrl-C (SIGINT) implemented to prevent shell exit and refresh prompt correctly.  
 - Debug printing of input commands.
@@ -30,21 +30,14 @@ TO DO:
 Phase 3: Built-in Commands
 These commands are executed directly by the shell without creating a new process:
 
-DONE:  
-- cd (update working directory, handle errors)
-- exit (exit shell, with optional status code)
-- pwd (Show current directory)
-
-TO DO:  
-- echo – NEEDS PARSING AND REFINEMENT AFTER PARSING
-- export – Set environment variables
-- unset – Remove environment variables
-- alias – Create command shortcuts
-- type – Identify command type
-- help – Display built-in command info
-- history – Show command history
-- Ensure built-ins execute in the main shell process (no fork).  
-- Use printf for output and error messages.
+DONE
+echo	Only support -n flag
+cd	Only relative/absolute path, cd with no args = $HOME
+pwd	Just print current path
+export	Only VAR or VAR=value
+unset	Only remove vars by name
+env	No args, just print env
+exit	Only exit [numeric_code]
 
 ------------------------------------------------------------------------------
 
