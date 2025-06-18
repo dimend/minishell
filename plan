@@ -3,7 +3,7 @@ Minishell Project Progress & To-Do Plan
 Phase 1: Setup & Basic Input Handling  
 DONE:  
 - Shell loop reading user input with readline().  
-- Commands added to history via add_history().  
+- Commands added to history via add_history() with line number.  
 - Ctrl-D (EOF) handled gracefully to exit shell.  
 - Signal handler for Ctrl-C (SIGINT) implemented to prevent shell exit and refresh prompt correctly.  
 - Debug printing of input commands.
@@ -30,21 +30,14 @@ TO DO:
 Phase 3: Built-in Commands
 These commands are executed directly by the shell without creating a new process:
 
-DONE:  
-- cd (update working directory, handle errors)
-- exit (exit shell, with optional status code)
-- pwd (Show current directory)
-
-TO DO:  
-- echo – NEEDS PARSING AND REFINEMENT AFTER PARSING
-- export – Set environment variables
-- unset – Remove environment variables
-- alias – Create command shortcuts
-- type – Identify command type
-- help – Display built-in command info
-- history – Show command history
-- Ensure built-ins execute in the main shell process (no fork).  
-- Use printf for output and error messages.
+DONE
+echo	Only support -n flag
+cd	Only relative/absolute path, cd with no args = $HOME
+pwd	Just print current path
+export	Only VAR or VAR=value
+unset	Only remove vars by name
+env	No args, just print env
+exit	Only exit [numeric_code]
 
 ------------------------------------------------------------------------------
 
@@ -88,17 +81,13 @@ TO DO:
 
 ------------------------------------------------------------------------------
 
-Phase 6: Pipes  
-DONE:  
-- None yet.
+Phase 6: Pipes
+DONE:
+- Basic pipeline execution with `|` implemented.
+- Create pipes with pipe(), fork processes, and redirect using dup2().
+- Close unused file descriptors and wait for child processes.
 
-TO DO:  
-- Support chaining commands with pipes (|).  
-- Parse multiple piped commands.  
-- Create pipes with pipe().  
-- Fork processes for each command in the pipe chain.  
-- Redirect stdin/stdout with dup2() to connect pipes.  
-- Close unused file descriptors properly.  
+TO DO:
 - Support combined use of pipes and redirections.
 
 ------------------------------------------------------------------------------

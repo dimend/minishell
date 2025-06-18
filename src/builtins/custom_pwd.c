@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   custom_pwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 17:35:05 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/13 18:22:43 by dimendon         ###   ########.fr       */
+/*   Created: 2025/06/13 18:15:48 by dimendon          #+#    #+#             */
+/*   Updated: 2025/06/13 18:20:46 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../libft/libft.h"
 
-void free_cmd(char **cmd)
+short int custom_pwd()
 {
-    int i;
+    char *cwd;
 
-    i = 0;
-    if (!cmd)
-        return;
-    while (cmd[i])
+    cwd = getcwd(NULL, 0);
+    if (!cwd)
     {
-        free(cmd[i]);
-        i++;
+        perror("pwd");
+        return (1);
     }
-    free(cmd);
+
+    printf("%s\n", cwd);
+    free(cwd);
+    return (0);
 }
