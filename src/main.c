@@ -6,9 +6,10 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/18 17:42:47 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:03:59 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 #include "libft/libft.h"
