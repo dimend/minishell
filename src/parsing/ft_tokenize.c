@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kievaughn <kievaughn@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 12:16:21 by kbrandon          #+#    #+#             */
-/*   Updated: 2025/06/10 16:53:18 by kievaughn        ###   ########.fr       */
+/*   Updated: 2025/06/18 19:56:35 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
+#include "../libft/libft.h"
 
 static size_t	token_count(char const *s, char c)
 {

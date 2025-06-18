@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kievaughn <kievaughn@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/18 18:33:38 by kievaughn        ###   ########.fr       */
-/*   Updated: 2025/06/18 17:42:47 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:03:59 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 #include "libft/libft.h"
@@ -24,7 +24,7 @@ void sigint_handler(int signum)
     write(STDOUT_FILENO, "\n", 1);
 
     rl_on_new_line();
-//    rl_replace_line("", 0);
+    rl_replace_line("", 0);
     rl_redisplay();
 }
 

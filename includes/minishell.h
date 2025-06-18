@@ -6,10 +6,10 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/16 16:10:43 by dimendon         ###   ########.fr       */
-/*   Updated: 2025/06/18 17:49:39 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:55:29 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef MINISHELL_H
@@ -40,9 +40,10 @@
 // GNU Readline Library
 # include <readline/readline.h> // readline, add_history
 # include <readline/history.h>  // rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
-// ==================== BUILTIN ====================
+
 extern int  last_exit_code;
 
+// ==================== BUILTIN ====================
 short int   custom_cd(char **envp, char **args);
 short int   custom_exit(char **args);
 short int   custom_echo(char **arg);
@@ -67,11 +68,10 @@ char        **copy_envp(char **envp);
 int         env_size(char **env);
 char        **env_realloc_add(char **env);
 int         env_add(char ***env_ptr, const char *new_var);
-=======
-void    process_command(char ***envp, char *line);
+void        process_command(char ***envp, char *line);
 
 // ==================== HANDLER ====================
-int   execute_command(char *path, char **cmd, char **envp);
+int     execute_command(char *path, char **cmd, char **envp);
 
 // ==================== HELPERS ====================
 char    **copy_envp(char **envp);
@@ -82,5 +82,8 @@ int     env_add(char ***env_ptr, const char *new_var);
 char    *get_env_value(char **envp, const char *name);
 char    **get_env_path(char **envp, const char *name);
 char    *get_path(char **envp, char **cmd);
+
+// ==================== PARSING ====================
+char    **ft_tokenize(char const *s, char c);
 
 #endif
