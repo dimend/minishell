@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:02:23 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/16 20:48:52 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:06:19 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ int is_valid_name(const char *name)
 {
     int i;
 
-    i = 0;
     if (!name || !name[0])
-        return 0;
+        return (0);
 
     if (!ft_isalpha(name[0]) && name[0] != '_')
-        return 0;
+        return (0);
 
-    while (name[++i])
+    i = 1;
+    while (name[i] && name[i] != '=')
     {
         if (!ft_isalnum(name[i]) && name[i] != '_')
-            return 0;
+            return (0);
+        i++;
     }
 
     return (1);
@@ -143,7 +144,7 @@ short int custom_export(char ***env, char **args)
     size = env_size(*env);
     index = malloc(sizeof(int) * size);
     if (!index)
-        return(1);
+        return (1);
     i = 0;
     while (i < size)
     {
@@ -154,8 +155,13 @@ short int custom_export(char ***env, char **args)
     if (!args[1])
         print_env(*env, index, size);
     else
-        check_update_env(env, args);
-
+    {
+        if (check_update_env(env, args) == -1)
+        {
+            free(index);
+            return (1);
+        }
+    }
     free(index);
     return (0);
 }

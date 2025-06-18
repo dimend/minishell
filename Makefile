@@ -6,7 +6,7 @@
 #    By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 13:42:42 by dimendon          #+#    #+#              #
-#    Updated: 2025/06/16 16:11:11 by dimendon         ###   ########.fr        #
+#    Updated: 2025/06/18 16:55:08 by dimendon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRCS =	src/builtins/custom_cd.c \
 		src/builtins/custom_exit.c \
 		src/builtins/custom_pwd.c \
 		src/builtins/custom_export.c \
+		src/builtins/custom_env.c \
+		src/builtins/custom_unset.c \
 		src/cleanup.c \
 		src/controller.c \
 		src/handlers.c \

@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:07 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/16 20:21:02 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:03:48 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,55 @@ char **env_realloc_add(char **env)
     int size;
     char **new_env;
     int i;
-    
+
     size = env_size(env);
-    new_env = malloc(sizeof(char *) * (size + 2));
-    i = 0;
+    new_env = malloc(sizeof(char *) * (size + 2)); // +1 for new var +1 for NULL
     if (!new_env)
         return (NULL);
-    while(i < size)
+
+    i = 0;
+    while (i < size)
     {
-        new_env[i] = env[i];
+        new_env[i] = env[i];  // shallow copy pointers
         i++;
     }
     new_env[size] = NULL;
-    free(env);
+    free(env);  // free old array (not the strings)
     return (new_env);
 }
 
 int env_add(char ***env_ptr, const char *new_var)
 {
-    char **env = *env_ptr;
-    int env_size = 0;
+    char **env;
+    int env_size;
     char **new_env;
 
-    while (env && env[env_size])
+    env = *env_ptr;
+    env_size = 0;
+
+    if (!env)
+    {
+        new_env = malloc(sizeof(char *) * 2);
+        if (!new_env)
+            return (-1);
+        new_env[0] = ft_strdup(new_var);
+        if (!new_env[0])
+        {
+            free(new_env);
+            return (-1);
+        }
+        new_env[1] = NULL;
+        *env_ptr = new_env;
+        return (0);
+    }
+
+    while (env[env_size])
         env_size++;
 
     new_env = env_realloc_add(env);
     if (!new_env)
         return (-1);
+
     new_env[env_size] = ft_strdup(new_var);
     if (!new_env[env_size])
     {
@@ -92,6 +113,8 @@ int env_add(char ***env_ptr, const char *new_var)
         return (-1);
     }
     new_env[env_size + 1] = NULL;
+
     *env_ptr = new_env;
     return (0);
 }
+
