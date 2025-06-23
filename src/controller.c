@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:22:38 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/23 13:45:42 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:08:34 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void process_command(char ***envp, char *line)
     char **cmd;
     char *path;
 
-    cmd = ft_tokenize(line, ' ');
+    cmd = ft_tokenize(line, ' ', *envp);
     if (!cmd || !cmd[0])
     {
         free_cmd(cmd);
