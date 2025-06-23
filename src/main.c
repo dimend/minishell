@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/18 19:03:59 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/23 13:58:11 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int main(int argc, char **argv, char **envp)
     
     env = copy_envp(envp);
     signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, SIG_IGN);
     while (1)
     {
         line = readline("minishell$ ");
