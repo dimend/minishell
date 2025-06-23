@@ -43,7 +43,7 @@ void    execute_pipeline(char **envp, char **segments)
     while (++i < num)
     {
         /* tokenize current segment into command + args */
-        char    **cmd = ft_tokenize(segments[i], ' ');
+        char    **cmd = ft_tokenize(segments[i], ' ', envp);
         if (!cmd || !cmd[0])
         {
             free_cmd(cmd);

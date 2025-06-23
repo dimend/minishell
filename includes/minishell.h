@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kbrandon <kbrandon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/18 19:55:29 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:47:44 by kbrandon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char    **get_env_path(char **envp, const char *name);
 char    *get_path(char **envp, char **cmd);
 
 // ==================== PARSING ====================
-char    **ft_tokenize(char const *s, char c);
+char    **ft_tokenize(char const *s, char c, char **envp);
+char *build_expanded_str(char *str, char **envp);
 
 #endif

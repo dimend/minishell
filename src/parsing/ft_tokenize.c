@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kbrandon <kbrandon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 12:16:21 by kbrandon          #+#    #+#             */
-/*   Updated: 2025/06/23 14:34:15 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:51:58 by kbrandon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void     remove_quotes(char *str)
         str[j] = '\0';
 }
 
-char    **ft_tokenize(char const *s, char c)
+char    **ft_tokenize(char const *s, char c, char **envp)
 {
         char    **arr;
         int             i;
@@ -128,6 +128,12 @@ char    **ft_tokenize(char const *s, char c)
                 arr[i] = ft_substr((char *)s, 0, len);
                 if (!arr[i])
                         return (free_arr(arr, i), NULL);
+                if (arr[i][0] != '\'')
+                {
+                        char *expanded = build_expanded_str(arr[i], envp);
+                        free(arr[i]);
+                        arr[i] = expanded;
+                }
                 remove_quotes(arr[i]);
                 i++;
                 s += len;
