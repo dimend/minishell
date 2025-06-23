@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_tokenize.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 12:16:21 by kbrandon          #+#    #+#             */
-/*   Updated: 2025/06/23 14:34:15 by dimendon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "../libft/libft.h"
 
@@ -105,8 +93,81 @@ static void     remove_quotes(char *str)
         }
         str[j] = '\0';
 }
+static char *append_literal(char *result, char *str, int start, int i)
+{
+    char *tmp;
 
-char    **ft_tokenize(char const *s, char c)
+    str[i] = '\0';  // Temporarily terminate literal segment
+    tmp = ft_strcatrealloc(result, str + start);
+    str[i] = '$';   // Restore '$' after append
+    if (!tmp)
+    {
+        free(result);
+        return (NULL);
+    }
+    return (tmp);
+}
+
+static char *expand_var(char *str, int *var_len)
+{
+    int i = 0;
+
+    while (str[i] != '\0' && ft_isalnum(str[i]))
+        i++;
+    *var_len = i;
+    if (i > 0)
+        return (ft_substr(str, 0, i));
+    return (NULL);
+}
+
+static char *append_expanded_var(char *result, char *str, int *i, char **envp)
+{
+    int var_len;
+    char *var;
+    char *value;
+    char *tmp;
+
+    var_len = 0;
+    var = expand_var(&str[*i + 1], &var_len);
+    value = get_env_value(envp, var);
+    if (!value)
+        value = "";
+    tmp = ft_strcatrealloc(result, value);
+    free(var);
+    if (!tmp)
+        return (NULL);
+    *i += var_len + 1;
+    return (tmp);
+}
+
+static char *build_expanded_str(char *str, char **envp)
+{
+    int i;
+    int start;
+    char *result;
+
+    i = 0;
+    start = 0;
+    result = NULL;
+    while (str[i])
+    {
+        if (str[i] == '$' && ft_isalnum(str[i + 1]))
+        {
+            if (!(result = append_literal(result, str, start, i)))
+                return (NULL);
+            if (!(result = append_expanded_var(result, str, &i, envp)))
+                return (NULL);
+            start = i;
+        }
+        else
+            i++;
+    }
+    if (!(result = ft_strcatrealloc(result, str + start)))
+        return (NULL);
+    return (result);
+}
+
+char    **ft_tokenize(char const *s, char c, char **envp)
 {
         char    **arr;
         int             i;
@@ -128,6 +189,12 @@ char    **ft_tokenize(char const *s, char c)
                 arr[i] = ft_substr((char *)s, 0, len);
                 if (!arr[i])
                         return (free_arr(arr, i), NULL);
+                if(arr[i][0] != '\'')
+                {
+                        char *expanded = build_expanded_str(arr[i], envp);
+                        free(arr[i]);
+                        arr[i] = expanded;
+                }
                 remove_quotes(arr[i]);
                 i++;
                 s += len;
