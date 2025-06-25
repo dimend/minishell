@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/23 18:06:25 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:21:25 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 extern int  last_exit_code;
 
 // ==================== BUILTIN ====================
-short int   custom_cd(char **envp, char **args);
+short int   custom_cd(char ***envp, char **args);
 short int   custom_exit(char **args);
 short int   custom_echo(char **arg);
 short int   custom_pwd(void);

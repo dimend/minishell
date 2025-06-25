@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:22:38 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/23 18:08:34 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:20:53 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int run_builtin(char ***envp, char **cmd)
     if (!ft_strncmp(cmd[0], "echo", 5))
         last_exit_code = custom_echo(cmd);
     else if (!ft_strncmp(cmd[0], "cd", 3))
-        last_exit_code = custom_cd(*envp, cmd);
+        last_exit_code = custom_cd(envp, cmd);
     else if (!ft_strncmp(cmd[0], "pwd", 4))
         last_exit_code = custom_pwd();
     else if (!ft_strncmp(cmd[0], "export", 7))
@@ -64,7 +64,7 @@ void process_command(char ***envp, char *line)
         return;
     }
     if (is_builtin(cmd[0]))
-        run_builtin(envp, cmd);
+        last_exit_code = run_builtin(envp, cmd);
     else
     {
         path = get_path(*envp, cmd);
@@ -75,7 +75,7 @@ void process_command(char ***envp, char *line)
         }
         else
         {
-            printf("Command not found: %s\n", cmd[0]);
+            fprintf(stderr, "%s: command not found\n", cmd[0]);
             last_exit_code = 127;
         }
     }
