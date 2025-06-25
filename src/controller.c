@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:22:38 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/25 14:20:53 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:14:09 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,32 @@ short int is_builtin(const char *cmd)
 
 void process_command(char ***envp, char *line)
 {
+    char **segments;
     char **cmd;
     char *path;
+    int     count;
 
-    cmd = ft_tokenize(line, ' ', *envp);
+    segments = split_pipes(line);
+    if (!segments)
+        return ;
+    count = 0;
+    while (segments[count])
+        count++;
+    if (count > 1)
+    {
+        execute_pipeline(*envp, segments);
+        free_cmd(segments);
+        return ;
+    }
+    cmd = ft_tokenize(segments[0], ' ', *envp);
+    free_cmd(segments);
     if (!cmd || !cmd[0])
     {
         free_cmd(cmd);
         return;
     }
     if (is_builtin(cmd[0]))
-        last_exit_code = run_builtin(envp, cmd);
+        run_builtin(envp, cmd);
     else
     {
         path = get_path(*envp, cmd);
@@ -75,7 +90,7 @@ void process_command(char ***envp, char *line)
         }
         else
         {
-            fprintf(stderr, "%s: command not found\n", cmd[0]);
+            printf("Command not found: %s\n", cmd[0]);
             last_exit_code = 127;
         }
     }

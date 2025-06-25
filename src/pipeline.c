@@ -1,12 +1,7 @@
 #include "minishell.h"
 #include "libft/libft.h"
 
-typedef struct s_pipefd {
-    int in_fd;
-    int out_fd;
-}   t_pipefd;
-
-static int count_segments(char **segments)
+static int  count_segments(char **segments)
 {
     int i = 0;
     while (segments && segments[i])
@@ -14,99 +9,74 @@ static int count_segments(char **segments)
     return (i);
 }
 
-/* Setup child process: redirect fds and exec command */
-static void setup_child_process(char **envp, char **cmd, t_pipefd pipes, int is_last)
+void    execute_pipeline(char **envp, char **segments)
 {
-    if (pipes.in_fd != 0)
-    {
-        dup2(pipes.in_fd, STDIN_FILENO);
-        close(pipes.in_fd);
-    }
-    if (!is_last)
-    {
-        dup2(pipes.out_fd, STDOUT_FILENO);
-        close(pipes.out_fd);
-    }
+    int     num;
+    pid_t   *pids;
+    int     in_fd;
+    int     fd[2];
+    int     i;
 
-    if (is_builtin(cmd[0]))
-        run_builtin(&envp, cmd);
-    else
-    {
-        char *path = get_path(envp, cmd);
-        if (path)
-        {
-            execve(path, cmd, envp);
-            perror("execve");
-            free(path);
-        }
-        else
-            fprintf(stderr, "Command not found: %s\n", cmd[0]);
-    }
-    free_cmd(cmd);
-    _exit(1);
-}
-
-/* Wait for all children and update global exit code */
-static void wait_for_children(pid_t *pids, int num)
-{
-    int status;
-    int j = 0;
-    last_exit_code = 0;
-    while (j < num)
-    {
-        if (waitpid(pids[j], &status, 0) == -1)
-            perror("waitpid");
-        else if (WIFEXITED(status))
-            last_exit_code = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            last_exit_code = 128 + WTERMSIG(status);
-        j++;
-    }
-}
-
-void execute_pipeline(char **envp, char **segments)
-{
-    int     num = count_segments(segments);
-    pid_t   *pids = malloc(sizeof(pid_t) * num);
-    int     in_fd = 0;   // previous pipe's read end (or stdin for first)
-    int     i = 0;
-
+    num = count_segments(segments);
+    pids = malloc(sizeof(pid_t) * num);
     if (!pids)
-        return;
-
-    while (i < num)
+        return ;
+    in_fd = 0;
+    i = -1;
+    while (++i < num)
     {
-        char **cmd = ft_tokenize(segments[i], ' ', envp);
+        char    **cmd = ft_tokenize(segments[i], ' ',  envp);
         if (!cmd || !cmd[0])
         {
             free_cmd(cmd);
-            i++;
-            continue;
+            continue ;
         }
-
-        int fd[2] = {-1, -1};
-        t_pipefd pipes = {in_fd, -1};
-
-        if (i < num - 1)
+        if (i < num - 1 && pipe(fd) == -1)
         {
-            if (pipe(fd) == -1)
-            {
-                perror("pipe");
-                free_cmd(cmd);
-                break;
-            }
-            pipes.out_fd = fd[1];
+            perror("pipe");
+            free_cmd(cmd);
+            if (in_fd != 0)
+                close(in_fd);
+            break ;
         }
-
         pids[i] = fork();
         if (pids[i] == 0)
         {
-            // Child
+            if (in_fd != 0)
+            {
+                dup2(in_fd, STDIN_FILENO);
+                close(in_fd);
+            }
             if (i < num - 1)
             {
-                close(fd[0]); // child does not read from the pipe, only writes
+                dup2(fd[1], STDOUT_FILENO);
+                close(fd[0]);
+                close(fd[1]);
             }
-            setup_child_process(envp, cmd, pipes, i == num - 1);
+            if (is_builtin(cmd[0]))
+            {
+                run_builtin(&envp, cmd);
+                free_cmd(cmd);
+                exit(last_exit_code);
+            }
+            else
+            {
+                char *path = get_path(envp, cmd);
+                if (path)
+                {
+                    execve(path, cmd, envp);
+                    perror("execve");
+                    free(path);
+                    last_exit_code = 126;
+                }
+                else
+                {
+                    fprintf(stderr, "Command not found: %s\n", cmd[0]);
+                    last_exit_code = 127;
+                }
+                free_cmd(cmd);
+                exit(last_exit_code);
+            }
         }
         else if (pids[i] < 0)
         {
@@ -116,28 +86,42 @@ void execute_pipeline(char **envp, char **segments)
                 close(fd[0]);
                 close(fd[1]);
             }
+            if (in_fd != 0)
+                close(in_fd);
             free_cmd(cmd);
-            break;
+            break ;
         }
-
-        // Parent
         if (in_fd != 0)
             close(in_fd);
         if (i < num - 1)
         {
-            close(fd[1]); // parent closes write end, keeps read end for next child
+            close(fd[1]);
             in_fd = fd[0];
         }
         else
-        {
             in_fd = 0;
-        }
         free_cmd(cmd);
-        i++;
     }
     if (in_fd != 0)
         close(in_fd);
-
-    wait_for_children(pids, num);
+    {
+        int status;
+        int j = 0;
+        while (j < num)
+        {
+            if (waitpid(pids[j], &status, 0) == -1)
+                perror("waitpid");
+            if (j == num - 1)
+            {
+                if (WIFEXITED(status))
+                    last_exit_code = WEXITSTATUS(status);
+                else if (WIFSIGNALED(status))
+                    last_exit_code = 128 + WTERMSIG(status);
+                else
+                    last_exit_code = 1;
+            }
+            j++;
+        }
+    }
     free(pids);
 }

@@ -6,7 +6,7 @@
 #    By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/04 13:42:42 by dimendon          #+#    #+#              #
-#    Updated: 2025/06/25 16:04:22 by dimendon         ###   ########.fr        #
+#    Updated: 2025/06/25 18:13:44 by dimendon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS =	        src/builtins/custom_cd.c \
                 src/handlers.c \
                 src/helpers.c \
                 src/pipeline.c \
+				src/split_pipes.c \
                 src/main.c \
                 src/utils.c
 
