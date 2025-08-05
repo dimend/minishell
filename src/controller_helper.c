@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 14:15:02 by dimendon          #+#    #+#             */
-/*   Updated: 2025/07/30 14:37:44 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:20:53 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**prepare_command(char *segment, int *in_fd, int *out_fd,
 	cmd = tokenize_command(segment, ' ', *envp);
 	if (!cmd)
 		return (NULL);
-	cmd = handle_redirections(cmd, in_fd, out_fd);
+	cmd = handle_redirections(cmd, count_strings(cmd) + 1, in_fd, out_fd);
 	if (!cmd || !cmd[0])
 	{
 		free_cmd(cmd);
