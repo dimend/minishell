@@ -27,8 +27,7 @@ int	is_folder(char *arg)
 	return (0);
 }
 
-char	**prepare_command(char *segment, int *in_fd, int *out_fd,
-		char ***envp)
+char	**prepare_command(char *segment, int *in_fd, int *out_fd, char ***envp)
 {
 	char	**cmd;
 
@@ -44,8 +43,7 @@ char	**prepare_command(char *segment, int *in_fd, int *out_fd,
 	return (cmd);
 }
 
-void	setup_redirections(int in_fd, int out_fd, int *save_in,
-		int *save_out)
+void	setup_redirections(int in_fd, int out_fd, int *save_in, int *save_out)
 {
 	*save_in = dup(STDIN_FILENO);
 	*save_out = dup(STDOUT_FILENO);
@@ -58,8 +56,7 @@ void	setup_redirections(int in_fd, int out_fd, int *save_in,
 		dup2(out_fd, STDOUT_FILENO);
 }
 
-void	restore_redirections(int in_fd, int out_fd, int save_in,
-		int save_out)
+void	restore_redirections(int in_fd, int out_fd, int save_in, int save_out)
 {
 	if (out_fd != STDOUT_FILENO)
 	{

@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:38 by dimendon          #+#    #+#             */
-/*   Updated: 2025/07/08 17:11:48 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:41:44 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,27 @@ static char	**split_path_dirs(char **envp, const char *name)
 	return (ft_split(value, ':'));
 }
 
+char	*check_and_construct_path(char *path, char **cmd)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	tmp = ft_strcatrealloc(tmp, path);
+	tmp = ft_strcatrealloc(tmp, "/");
+	tmp = ft_strcatrealloc(tmp, cmd[0]);
+	if (tmp && access(tmp, F_OK | X_OK) == 0)
+	{
+		return (ft_strdup(tmp));
+	}
+	free(tmp);
+	return (NULL);
+}
+
 char	*get_path(char **envp, char **cmd)
 {
 	int		i;
 	char	**paths;
 	char	*finalpath;
-	char	*tmp;
 
 	finalpath = NULL;
 	paths = split_path_dirs(envp, "PATH");
@@ -53,17 +68,9 @@ char	*get_path(char **envp, char **cmd)
 	i = 0;
 	while (paths[i])
 	{
-		tmp = NULL;
-		tmp = ft_strcatrealloc(tmp, paths[i]);
-		tmp = ft_strcatrealloc(tmp, "/");
-		tmp = ft_strcatrealloc(tmp, cmd[0]);
-		if (tmp && access(tmp, F_OK | X_OK) == 0)
-		{
-			finalpath = ft_strdup(tmp);
-			free(tmp);
+		finalpath = check_and_construct_path(paths[i], cmd);
+		if (finalpath)
 			break ;
-		}
-		free(tmp);
 		i++;
 	}
 	i = 0;
