@@ -59,7 +59,7 @@ char	**split_redirs(char **arr)
 	int		start;
 	int		idx;
 	char	quote;
-					char op[2];
+	char	op[2];
 
 	out = malloc(sizeof(char *) * (total_parts(arr) + 1));
 	if (!out)

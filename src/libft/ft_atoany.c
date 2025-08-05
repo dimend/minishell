@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoany.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:55:01 by dimendon          #+#    #+#             */
-/*   Updated: 2025/06/04 20:26:55 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:48:25 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	checkoverflow(const char *str, int *i, int sign, long long *result)
 		else
 		{
 			if ((unsigned long long)res > ((unsigned long long)(-(LLONG_MIN
-							+ digit))) / 10)
+						+ digit))) / 10)
 				return (0);
 		}
 		res = res * 10 + digit;
