@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:40:36 by dimendon          #+#    #+#             */
-/*   Updated: 2025/08/05 16:19:53 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:28:44 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_pipe_info
 // ==================== BUILTINS ====================
 short int   custom_cd(char ***envp, char **args);
 short int   custom_echo(char **arg);
-short int   custom_env(char **envp);
+short int	custom_env(char **envp, char **args);
 short int   custom_exit(char **args);
 short int   custom_export(char ***env, char **args);
 short int   custom_pwd(void);
@@ -79,7 +79,7 @@ int         run_builtin(char ***envp, char **cmd);
 int         is_folder(char *arg);
 char        **prepare_command(char *segment, int *in_fd, int *out_fd, char ***envp);
 void        setup_redirections(int in_fd, int out_fd, int *save_in, int *save_out);
-void        restore_redirections(int in_fd, int out_fd, int save_in, int save_out);
+void        restore_redirections(int save_in, int save_out);
 short int   is_builtin(const char *cmd);
 
 // ==================== HANDLER ====================
@@ -101,8 +101,8 @@ void        close_pipe(int *fd);
 void        parent_cleanup(int *in_fd, int *fd, int i, int num);
 void        wait_for_all(pid_t *pids, int count);
 void        execute_pipeline(char **envp, char **segments);
-char        **handle_redirections(char **cmd, int count, int *in_fd, int *out_fd);
-int	        handle_heredoc(const char *delim, int *in_fd);
+char        **handle_redirections(char **cmd, int *quoted, int count, char **envp, int *in_fd, int *out_fd);
+int         handle_heredoc(const char *delim, int quoted, char **envp, int *in_fd);
 void        pipeline_loop(t_pipeline_data *pipeline);
 
 // ==================== PARSING ====================
@@ -111,8 +111,9 @@ char        *append_literal(char *result, char *str, int start, int i);
 char        *expand_var(char *str, int *var_len);
 char        *append_expanded_var(char *result, char *str, int *i, char **envp);
 char        *build_expanded_str(char *str, char **envp);
+char        **split_expanded_tokens(char **arr);
 char        **split_redirs(char **arr);
-char        **tokenize_command(char const *s, char c, char **envp);
+char        **tokenize_command(char const *s, char c, char **envp, int **quoted);
 char        **split_pipes(const char *line);
 
 // ==================== MISC ====================

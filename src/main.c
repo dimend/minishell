@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 13:41:29 by dimendon          #+#    #+#             */
-/*   Updated: 2025/07/30 13:42:13 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/21 16:06:25 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	sigint_handler(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -45,5 +46,6 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 	}
 	free_cmd(env);
-	return (0);
+	return (g_exit_code);
 }
+
