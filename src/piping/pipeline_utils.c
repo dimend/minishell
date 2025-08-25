@@ -6,7 +6,7 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:39:38 by dimendon          #+#    #+#             */
-/*   Updated: 2025/08/05 15:46:51 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/08/25 11:53:10 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,58 +39,89 @@ static int      exit_code_from_errno(void)
         return (126);
 }
 
-void    execute_cmd(char **envp, char **cmd)
+char **tokens_to_argv(t_token **cmd)
 {
-        char    *path;
+    int count = 0;
+    while (cmd && cmd[count])
+        count++;
 
-        if (is_builtin(cmd[0]))
+    char **argv = malloc((count + 1) * sizeof(char *));
+    if (!argv)
+        return NULL;
+
+    for (int i = 0; i < count; i++)
+        argv[i] = ft_strdup(cmd[i]->str); // duplicate string from token
+
+    argv[count] = NULL;
+    return argv;
+}
+
+void execute_cmd(char **envp, t_token **cmd)
+{
+    char *path;
+
+    char **argv = tokens_to_argv(cmd);
+    if (!argv || !argv[0])
+    {
+        free_cmd(argv);
+        free_tokens(cmd);
+        exit(0);
+    }
+
+    // Builtins
+    if (is_builtin(argv[0]))
+    {
+        run_builtin(&envp, cmd);
+        free_cmd(argv);
+        free_tokens(cmd);
+        exit(g_exit_code);
+    }
+
+    // Path with slash
+    if (ft_strchr(argv[0], '/'))
+    {
+        if (access(argv[0], F_OK) != 0)
         {
-                run_builtin(&envp, cmd);
-                free_cmd(cmd);
-                exit(g_exit_code);
+            perror(argv[0]);
+            g_exit_code = 127;
         }
-        if (ft_strchr(cmd[0], '/'))
+        else if (is_folder(argv[0]))
         {
-                if (access(cmd[0], F_OK) != 0)
-                {
-                        perror(cmd[0]);
-                        g_exit_code = 127;
-                }
-                else if (is_folder(cmd[0]))
-                {
-                        fprintf(stderr, "%s: Is a directory\n", cmd[0]);
-                        g_exit_code = 126;
-                }
-                else if (access(cmd[0], X_OK) != 0)
-                {
-                        perror(cmd[0]);
-                        g_exit_code = 126;
-                }
-                else
-                {
-                        execve(cmd[0], cmd, envp);
-                        perror(cmd[0]);
-                        g_exit_code = exit_code_from_errno();
-                }
+            fprintf(stderr, "%s: Is a directory\n", argv[0]);
+            g_exit_code = 126;
+        }
+        else if (access(argv[0], X_OK) != 0)
+        {
+            perror(argv[0]);
+            g_exit_code = 126;
         }
         else
         {
-                path = get_path(envp, cmd);
-                if (path)
-                {
-                        execve(path, cmd, envp);
-                        perror(cmd[0]);
-                        free(path);
-                        g_exit_code = exit_code_from_errno();
-                }
-                else
-                {
-                        fprintf(stderr, "%s: command not found\n", cmd[0]);
-                        g_exit_code = 127;
-                }
+            execve(argv[0], argv, envp);
+            perror(argv[0]);
+            g_exit_code = exit_code_from_errno();
         }
-        free_cmd(cmd);
-        exit(g_exit_code);
+    }
+    else
+    {
+        path = get_path(envp, argv);
+        if (path)
+        {
+            execve(path, argv, envp);
+            perror(argv[0]);
+            free(path);
+            g_exit_code = exit_code_from_errno();
+        }
+        else
+        {
+            fprintf(stderr, "%s: command not found\n", argv[0]);
+            g_exit_code = 127;
+        }
+    }
+
+    free_cmd(argv);
+    free_tokens(cmd);
+    exit(g_exit_code);
 }
 
 void	close_pipe(int *fd)

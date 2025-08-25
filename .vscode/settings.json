@@ -8,6 +8,7 @@
         "algorithm": "c",
         "format": "c",
         "chrono": "c",
-        "variant": "c"
+        "variant": "c",
+        "cstdlib": "c"
     }
 }
