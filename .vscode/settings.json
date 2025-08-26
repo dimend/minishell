@@ -9,6 +9,7 @@
         "format": "c",
         "chrono": "c",
         "variant": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "sstream": "c"
     }
 }
