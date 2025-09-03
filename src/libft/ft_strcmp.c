@@ -6,13 +6,13 @@
 /*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 17:48:55 by dimendon          #+#    #+#             */
-/*   Updated: 2025/08/05 17:50:15 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/09/02 19:14:10 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strcmp(char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 

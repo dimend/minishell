@@ -19,7 +19,6 @@ static void	remove_var(char ***envp, const char *var)
 	int	pos;
 
 	i = 0;
-	pos = 0;
 	while ((*envp)[i])
 	{
 		if (ft_strncmp((*envp)[i], var, ft_strlen(var)) == 0
@@ -49,6 +48,6 @@ short int	custom_unset(char ***envp, t_token **args)
 		remove_var(envp, args[i]->str);
 		i++;
 	}
+	g_exit_code = 0;
 	return (0);
 }
-

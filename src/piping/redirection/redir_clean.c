@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   custom_env.c                                       :+:      :+:    :+:   */
+/*   redir_clean.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kbrandon <kbrandon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 16:41:47 by dimendon          #+#    #+#             */
-/*   Updated: 2025/08/25 11:56:30 by dimendon         ###   ########.fr       */
+/*   Created: 2025/09/02 16:43:09 by kbrandon          #+#    #+#             */
+/*   Updated: 2025/09/02 16:43:10 by kbrandon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "minishell.h"
 
-short int	custom_env(char **envp, t_token **args)
+t_token	**init_clean_array(t_token **cmd, int *count)
 {
-	int	i;
+	*count = count_tokens(cmd);
+	return (alloc_clean_array(*count));
+}
 
-	if (args[1])
+t_token	**finalize_clean_array(t_token **cmd, t_token **clean, int j)
+{
+	clean[j] = NULL;
+	free(cmd);
+	if (j == 0)
 	{
-		fprintf(stderr, "env: too many arguments\n");
-		g_exit_code = 1;
-		return (1);
+		free_token_array(clean, j);
+		return (NULL);
 	}
-	if (!envp)
-		return (1);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
-	g_exit_code = 0;
-	return (0);
+	return (clean);
 }

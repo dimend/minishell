@@ -10,6 +10,7 @@
         "chrono": "c",
         "variant": "c",
         "cstdlib": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "stdlib.h": "c"
     }
 }

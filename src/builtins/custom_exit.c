@@ -28,11 +28,13 @@ short int	custom_exit(t_token **args)
 	{
 		if (!ft_atoany(args[1]->str, &value))
 		{
-			fprintf(stderr, "exit: %s: numeric argument required\n", args[1]->str);
-			exit(2);
+			fprintf(stderr, "exit: %s: numeric argument required\n",
+				args[1]->str);
+			g_exit_code = 2;
+			exit(g_exit_code);
 		}
-		exit((unsigned char)value);
+		g_exit_code = (unsigned char)value;
+		exit(g_exit_code);
 	}
 	exit(g_exit_code);
 }
-

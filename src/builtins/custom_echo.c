@@ -3,47 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   custom_echo.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kbrandon <kbrandon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:15:55 by dimendon          #+#    #+#             */
-/*   Updated: 2025/08/26 14:27:31 by dimendon         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:07:48 by kbrandon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "minishell.h"
 
-static int	skip_n_flags(t_token **arg, int start)
-{
-	int	i;
-	int	j;
-	int	all_n;
-
-	i = start;
-	while (arg[i] && ft_strncmp(arg[i]->str, "-n", 2) == 0)
-	{
-		j = 1;
-		all_n = 1;
-		while (arg[i]->str[j])
-		{
-			if (arg[i]->str[j] != 'n')
-			{
-				all_n = 0;
-				break ;
-			}
-			j++;
-		}
-		if (!all_n)
-			break ;
-		i++;
-	}
-	return (i);
-}
-
 static int	write_echo_arg(t_token *tok)
 {
-	char	*code;
-	const char *arg = tok->str;
+	char		*code;
+	const char	*arg = tok->str;
 
 	if (tok->quoted == 1)
 	{
@@ -63,11 +36,11 @@ static int	write_echo_arg(t_token *tok)
 	return (0);
 }
 
-
 static int	print_echo_args(t_token **arg, int start)
 {
-	int	i = start;
+	int	i;
 
+	i = start;
 	while (arg[i])
 	{
 		if (write_echo_arg(arg[i]))
@@ -95,4 +68,3 @@ short int	custom_echo(t_token **arg)
 		write(1, "\n", 1);
 	return (0);
 }
-

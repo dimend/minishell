@@ -21,9 +21,11 @@ short int	custom_pwd(void)
 	if (!cwd)
 	{
 		perror("pwd");
+		g_exit_code = 1;
 		return (1);
 	}
 	printf("%s\n", cwd);
 	free(cwd);
+	g_exit_code = 0;
 	return (0);
 }
