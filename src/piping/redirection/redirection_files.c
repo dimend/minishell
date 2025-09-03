@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_files.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kbrandon <kbrandon@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dimendon <dimendon@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 00:00:00 by kbrandon          #+#    #+#             */
-/*   Updated: 2025/09/02 16:56:17 by kbrandon         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:29:29 by dimendon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	open_infile(char *file, int *in_fd)
 		error_perror(file);
 		if (errno == EACCES)
 			g_exit_code = 126;
-		else if (errno == ENOENT)
-			g_exit_code = 127;
 		else
 			g_exit_code = 1;
 		return (-1);
